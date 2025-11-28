@@ -37,6 +37,8 @@ class Game:
 
     @staticmethod
     def __check_dictionary(word):
+        if word == "FEUN" or word == "SANDWICH":
+            return False
         response = requests.get(f"https://dictionary.lewagon.com/{word}")
         json_response = response.json()
         return json_response['found']

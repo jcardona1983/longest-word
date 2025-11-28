@@ -23,17 +23,17 @@ class Game:
         self.grid: List[str] = [random.choice(string.ascii_uppercase) for _ in range(9)]
 
     def is_valid(self, word: str) -> bool:
-        """Return True if `word` can be made from the grid letters.
-
-        This consumes letters from a copy of the grid and verifies every
-        character in `word` (case-insensitive) exists and can be removed.
-        """
         if not isinstance(word, str) or not word:
             return False
-        elif word == 'FEUN' or word == 'SANDWICH':
-            return False
-        else:
-            return self.__check_dictionary(word)
+        # Check if the word can be constructed from the grid
+        grid_copy = self.grid.copy()
+        for letter in word.upper():
+            if letter in grid_copy:
+                grid_copy.remove(letter)
+            else:
+                return False
+        # Check if the word exists in the dictionary
+        return self.__check_dictionary(word)
 
     @staticmethod
     def __check_dictionary(word):

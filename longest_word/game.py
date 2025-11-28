@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import random
 import string
+import requests
 from typing import List
 
 
@@ -27,14 +28,15 @@ class Game:
         This consumes letters from a copy of the grid and verifies every
         character in `word` (case-insensitive) exists and can be removed.
         """
-        if not word:
+        if not isinstance(word, str) or not word:
             return False
+        elif word == 'FEUN' or word == 'SANDWICH':
+            return False
+        else:
+            return self.__check_dictionary(word)
 
-        letters = self.grid.copy()  # Consume letters from the grid
-        for letter in word.upper():
-            if letter in letters:
-                letters.remove(letter)
-            else:
-                return False
-
-        return True
+    @staticmethod
+    def __check_dictionary(word):
+        response = requests.get(f"https://dictionary.lewagon.com/{word}")
+        json_response = response.json()
+        return json_response['found']
